@@ -1,9 +1,10 @@
 import express from "express";
 import upload from "../middlewares/multer.js";
 import { addCar } from "../controllers/adminController.js";
+import adminAuth from "../middlewares/adminAuth.js";
 
 const adminRouter = express.Router();
 
-adminRouter.post("/add-car", upload.single("image"), addCar);
+adminRouter.post("/add-car", adminAuth, upload.single("image"), addCar);
 
 export default adminRouter;

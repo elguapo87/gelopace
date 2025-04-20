@@ -73,33 +73,6 @@ export const assets = {
     cars_img
 }
 
-export const specialityData = [
-    {
-        speciality: 'General physician',
-        image: General_physician
-    },
-    {
-        speciality: 'Gynecologist',
-        image: Gynecologist
-    },
-    {
-        speciality: 'Dermatologist',
-        image: Dermatologist
-    },
-    {
-        speciality: 'Pediatricians',
-        image: Pediatricians
-    },
-    {
-        speciality: 'Neurologist',
-        image: Neurologist
-    },
-    {
-        speciality: 'Gastroenterologist',
-        image: Gastroenterologist
-    },
-]
-
 export const brandData = [
     {
         brand: 'Bmw',

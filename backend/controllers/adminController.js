@@ -1,3 +1,9 @@
+import carsModel from "../models/carsModel.js";
+import validator from "validator";
+import bcrypt from "bcrypt";
+import { v2 as cloudinary } from "cloudinary";
+import jwt from "jsonwebtoken";
+
 // API for adding cars
 export const addCar = async (req, res) => {
     const { name, email, password, brand, aspiration, displacement, power, about, fees } = req.body

@@ -1,9 +1,12 @@
 import React from 'react'
+import Header from '../components/Header'
+import BrandMenu from '../components/BrandMenu'
 
 const Home = () => {
   return (
     <div>
-      Home
+      <Header />
+      <BrandMenu />
     </div>
   )
 }

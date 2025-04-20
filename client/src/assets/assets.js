@@ -137,7 +137,8 @@ export const cars = [
         displacement: "",
         power: '450',
         about: 'The ultimate factory M3 comes with more in all the right departments and less wherever it made sense for a street-legal track car. Instead of the standard M3 4.0-liter V8, the E92 M3 GTS has “more” in the form of its high-revving 4.4-liter V8, which gives it 40 more horsepower.',
-        fees: 300
+        fees: 300,
+        available: true
     },
     {
         _id: 'car2',
@@ -148,7 +149,8 @@ export const cars = [
         displacement: "",
         power: '365',
         about: 'Here is BMW’s recipe for the M2 Coupé. First, take the suspension and braking of the larger M3 and M4 and fit them in a lighter and more nimble chassis. Then, rather than attempting to imitate the bigger brothers’ powerplants, just take the best parts and infuse them perfectly.',
-        fees: 280
+        fees: 280,
+        available: true
     },
     {
         _id: 'car3',
@@ -158,7 +160,8 @@ export const cars = [
         aspiration: 'Turbo inline 4',
         power: '242',
         about: '"It’s pronounced “Al-peen,” and named for the type of driving Alpine founder Jean Rédélé designed his cars to be adept at. It’s been 24 years since the last Alpine A610 rolled off the assembly line. The new A110 was designed from the ground up with a primary goal in mind: Lightness. Throughout the A110, from its all-aluminum body and all-aluminum chassis to the integrated components, it delivers weight savings, agility, and efficiency. Less than 2,500 pounds, with a rear/mid-engine places the Alpine squarely facing tough competitors like the Porsche Cayman or Audi TT. Hit the mountain roads and find out if Colin Chapman is still right in saying “Simplify, then add lightness.” Alpine is banking he was."',
-        fees: 230
+        fees: 230,
+        available: false
     },
     {
         _id: 'car4',
@@ -169,7 +172,8 @@ export const cars = [
         displacement: "",
         power: '505',
         about: '"It’s been 21 years since Alfa Romeo sold cars in the United States, and one drive of the new Giulia might infer they spent the entire time making sure their next entry was perfect. The Giulia Quadrifoglio is all Alfa Romeo, with exotic lines, delicate styling touches, and the performance you expect from an Italian sport sedan. In Quadrifoglio dress the biggest treat is the 505 horsepower Ferrari-derived 2.9-liter twin-turbo V6.',
-        fees: 300
+        fees: 300,
+        available: true
     },
     {
         _id: 'car5',
@@ -180,7 +184,8 @@ export const cars = [
         displacement: "",
         power: '621',
         about: 'Power for the MC20 Coupé and Cielo come from a twin-turbocharged 3.0-liter V-6 rated for 621 horsepower and 538 pound-feet of torque.',
-        fees: 350
+        fees: 350,
+        available: true
     },
     {
         _id: 'car6',
@@ -191,7 +196,8 @@ export const cars = [
         displacement: "",
         power: '510',
         about: 'For almost 25 years the 911 GT3 has accepted only the limits of physics – and left the ordinary far behind. Motorsport-tested design and maximum performance ensure it unwaveringly bridges the boundary between the racetrack and the road.',
-        fees: 350
+        fees: 350,
+        available: false
     },
     {
         _id: 'car7',
@@ -202,7 +208,8 @@ export const cars = [
         displacement: "",
         power: '600',
         about: '"With its more aggressive styling, the upgraded 2020 R35 Nismo features faster acceleration, improved cornering force and better braking performance than the previous 2017 model. Nissan has iteratively refined and improved its R35 “Godzilla” for over a decade.',
-        fees: 350
+        fees: 350,
+        available: false
     },
     
 ]

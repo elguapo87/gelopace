@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Sidebar = () => {
+const CarList = () => {
   return (
     <div>
-      Sidebar
+      CarList
     </div>
   )
 }
 
-export default Sidebar
+export default CarList

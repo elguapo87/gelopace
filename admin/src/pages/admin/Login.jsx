@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AdminContext } from "../context/AdminContext";
+import { AdminContext } from "../../context/AdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 

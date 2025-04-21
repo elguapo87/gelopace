@@ -1,20 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import {  useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import RelatedCars from "../components/RelatedCars";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Appointment = () => {
 
   const { carId } = useParams()
-  const { cars, currencySymbol } = useContext(AppContext);
+  const { cars, currencySymbol, backendUrl, token, getCarsData } = useContext(AppContext);
   const [carInfo, setCarInfo] = useState(null);
   const [carSlots, setCarSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
   const [showImage, setShowImage] = useState(false);
 
-
+  const navigate = useNavigate();
 
   const fetchCarInfo = () => {
     const carInfo = cars.find((car) => car._id === carId);
@@ -69,13 +71,24 @@ const Appointment = () => {
       while (currentDate < endTime) {
         let formattedTime = currentDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-        // add slot to array
-        timeSlots.push({
-          dateTime: new Date(currentDate),
-          time: formattedTime
-        });
-  
-        // increment current time by 60 minutes
+        let day = currentDate.getDate();
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
+
+        const slotDate = day + "_" + month + "_" + year;
+        const slotTime = formattedTime;
+
+        const isSlotAvailable = carInfo.slots_booked[slotDate] && carInfo.slots_booked[slotDate].includes(slotTime) ? false : true;
+
+        if (isSlotAvailable) {
+          // add slot to array
+          timeSlots.push({
+            dateTime: new Date(currentDate),
+            time: formattedTime
+          });
+        }
+
+        // increment current time by 30 minutes
         currentDate.setMinutes(currentDate.getMinutes() + 60);
       }
       
@@ -83,7 +96,37 @@ const Appointment = () => {
     }
   };
   
-  
+  const bookAppointment = async () => {
+    if (!token) {
+      toast.warn("Login to book appointment");
+    } 
+    
+    try {
+      const date = carSlots[slotIndex][0].dateTime;
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      const slotDate = day + "_" + month + "_" + year;
+
+      const { data } = await axios.post(`${backendUrl}/api/users/book-appointment`, { carId, slotDate, slotTime }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        await getCarsData();
+        navigate("/my-appointments");
+
+      } else {
+        toast.error(data.message);
+      }
+
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     fetchCarInfo();
   }, [cars, carId]);
@@ -148,7 +191,7 @@ const Appointment = () => {
           ))}
         </div>
 
-        <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">Book an appointment</button>
+        <button onClick={bookAppointment} className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">Book an appointment</button>
       </div>
 
       <RelatedCars carId={carId} brand={carInfo.brand} />

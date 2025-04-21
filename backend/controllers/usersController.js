@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import usersModel from "../models/usersModel.js";
 import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
+import carsModel from "../models/carsModel.js";
+import appointementModel from "../models/appointmentModel.js";
 
 // API to register user
 export const registerUser = async (req, res) => {
@@ -69,19 +71,6 @@ export const userLogin = async (req, res) => {
 };
 
 // API to get user profile data
-// export const userProfile = async (req, res) => {
-//     const { userId } = req.body;
-    
-//     try {
-//         const userData = await usersModel.findById(userId).select("-password");
-//         res.json({ success: true, userData });
-        
-//     } catch (error) {
-//         console.log(error);
-//         res.json({ success: false, message: error.message });
-//     }
-// };
-
 export const userProfile = async (req, res) => {
     const userId = req.userId;
 

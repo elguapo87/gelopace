@@ -131,5 +131,60 @@ export const profileUpdate = async (req, res) => {
 };
 
 
+// API to book appointment 
+export const bookAppointment = async (req, res) => {
+    const userId = req.userId;
 
+    const { carId, slotDate, slotTime } = req.body;
+
+    try {
+        const carData = await carsModel.findById(carId).select("-password");
+        if (!carData.available) {
+            return res.json({ success: false, message: "Car is not available" });
+        }
+
+        let slots_booked = carData.slots_booked;
+
+        // Checking for slots availability
+        if (slots_booked[slotDate]) {
+            if (slots_booked[slotDate].includes(slotTime)) {
+                return res.json({ success: false, message: "Slot is not available" });
+
+            } else {
+                slots_booked[slotDate].push(slotTime);
+            }
+
+        } else {
+            slots_booked[slotDate] = [];
+            slots_booked[slotDate].push(slotTime);
+        }
+
+        const userData = await usersModel.findById(userId).select("-password");
+
+        delete carData.slots_booked;
+
+        const appointmentData = {
+            userId,
+            carId,
+            userData,
+            carData,
+            slotDate,
+            slotTime,
+            amount: carData.fees,
+            date: Date.now()
+        };
+
+        const newAppointment = new appointementModel(appointmentData);
+        await newAppointment.save();
+
+        // Save new slots data in carData
+        await carsModel.findByIdAndUpdate(carId, { slots_booked });
+
+        res.json({ success: true, message: "Appointment Booked" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
 

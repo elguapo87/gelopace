@@ -77,3 +77,14 @@ export const adminLogin = (req, res) => {
     }
 };
 
+// API to get all cars for admin panel
+export const carList = async (req, res) => {
+    try {
+        const cars = await carsModel.find({}).select("-password");
+        res.json({ success: true, cars });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};

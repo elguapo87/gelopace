@@ -96,7 +96,9 @@ export const userProfile = async (req, res) => {
 
 // API to update user profile data
 export const profileUpdate = async (req, res) => {
-    const { userId, name, email, phone, address, gender, dob } = req.body;
+    const userId = req.userId;
+
+    const { name, email, phone, address, gender, dob } = req.body;
     const imageFile = req.file;
     
     try {

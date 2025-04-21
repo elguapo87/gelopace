@@ -8,18 +8,6 @@ const MyProfile = () => {
 
   const { token, backendUrl, userData, setUserData, getUserData } = useContext(AppContext);
   const [userImage, setUserImage] = useState(false);
-  // const [userData, setUserData] = useState({
-  //   name: "Edward Vincent",
-  //   image: assets.profile_pic,
-  //   email: "richardjameswap@gmail.com",
-  //   phone: "+38165478962",
-  //   address: {
-  //     line1: "57th Cross, Richmond",
-  //     line2: "Circle, Church Road, London"
-  //   },
-  //   gender: "Male",
-  //   dob: "2000-01-20" 
-  // });
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -38,7 +26,7 @@ const MyProfile = () => {
       }
 
       const { data } = await axios.post(`${backendUrl}/api/users/profile-update`, formData, {
-        headers: { token }
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       if (data.success) {
@@ -133,6 +121,7 @@ const MyProfile = () => {
             isEdit
               ?
             <select onChange={(e) => setUserData(prev => ({ ...prev, gender: e.target.value }))} value={userData.gender} className="max-w-20 bg-gray-100">
+              <option value="Not Selected" disabled>Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>

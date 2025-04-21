@@ -1,14 +1,16 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
 
-    const currencySymbol = "€";
+    const currencySymbol = "$";
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const [cars, setCars] = useState([]);
     const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : false);
+    const [userData, setUserData] = useState(false);
+    const [cars, setCars] = useState([]);
 
     const getCarsData = async () => {
         try {
@@ -27,15 +29,51 @@ const AppContextProvider = (props) => {
         }
     };
 
+
+    const getUserData = async () => {
+        try {
+            const { data } = await axios.get(
+                `${backendUrl}/api/users/user-profile`,
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+    
+            if (data.success) {
+                setUserData(data.userData);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || error.message);
+        }
+    };
+
+
     useEffect(() => {
-            getCarsData();
-        }, []);
+        getCarsData();
+    }, []);
+
+    useEffect(() => {
+        if (token) {
+            getUserData();
+        } else {
+            setUserData(false);
+        }
+    }, [token]);
 
     const value = {
         cars,
-        backendUrl,
         currencySymbol,
-        token, setToken
+        backendUrl,
+        token, setToken,
+        userData, setUserData,
+        getUserData,
+        getCarsData
     };
 
     return (

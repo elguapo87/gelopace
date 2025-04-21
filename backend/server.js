@@ -4,6 +4,7 @@ import cors from "cors";
 import DBConnect from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import carRoutes from "./routes/carRoutes.js";
 
 // App config
 const app = express();
@@ -18,6 +19,7 @@ app.use(cors());
 
 // API endpoints
 app.use("/api/admin", adminRoutes);
+app.use("/api/cars", carRoutes);
 
 app.get("/", (req, res) => {
  res.send("API working")   ;

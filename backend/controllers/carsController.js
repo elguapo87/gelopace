@@ -14,3 +14,14 @@ export const changeStatus = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
+export const carList = async (req, res) => {
+    try {
+        const allCars = await carsModel.find({}).select(["-password", "-email"]);
+        res.json({ success: true, allCars });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};

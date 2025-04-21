@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
 export const AppContext = createContext();
 
@@ -7,6 +8,7 @@ const AppContextProvider = (props) => {
     const currencySymbol = "€";
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [cars, setCars] = useState([]);
+    const [token, setToken] = useState(localStorage.getItem("token") ? localStorage.getItem("token") : false);
 
     const getCarsData = async () => {
         try {
@@ -31,7 +33,9 @@ const AppContextProvider = (props) => {
 
     const value = {
         cars,
-        currencySymbol
+        backendUrl,
+        currencySymbol,
+        token, setToken
     };
 
     return (

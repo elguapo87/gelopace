@@ -66,3 +66,51 @@ export const userLogin = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
+// API to get user profile data
+export const userProfile = async (req, res) => {
+    const { userId } = req.body;
+    
+    try {
+        const userData = await usersModel.findById(userId).select("-password");
+        res.json({ success: true, userData });
+        
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// API to update user profile data
+export const profileUpdate = async (req, res) => {
+    const { userId, name, email, phone, address, gender, dob } = req.body;
+    const imageFile = req.file;
+    
+    try {
+        if (!name || !phone || !email || !address || !gender || !dob) {
+            return res.json({ success: false, message: "Missing Details" });
+        }
+
+        await usersModel.findByIdAndUpdate(userId, {
+            name,
+            phone,
+            email,
+            address: JSON.parse(address),
+            gender,
+            dob
+        });
+
+        if (imageFile) {
+            const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
+            const imageUrl = imageUpload.secure_url;
+
+            await usersModel.findByIdAndUpdate(userId, { image: imageUrl });
+        }
+
+        res.json({ success: true, message: "Profile Updated" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};

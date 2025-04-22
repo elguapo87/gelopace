@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../middlewares/multer.js";
-import { addCar, adminLogin, appointmentList, carList } from "../controllers/adminController.js";
+import { addCar, adminLogin, appointmentList, cancelAppoitment, carList } from "../controllers/adminController.js";
 import adminAuth from "../middlewares/adminAuth.js";
 import { changeStatus } from "../controllers/carsController.js";
 
@@ -11,5 +11,6 @@ adminRouter.post("/login", adminLogin);
 adminRouter.post("/car-list", adminAuth, carList);
 adminRouter.post("/change-status", adminAuth, changeStatus);
 adminRouter.get("/appointment-list", adminAuth, appointmentList);
+adminRouter.post("/cancel-appointment", adminAuth, cancelAppoitment);
 
 export default adminRouter;

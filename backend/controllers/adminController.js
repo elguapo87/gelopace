@@ -101,3 +101,29 @@ export const appointmentList = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
+// API for appointment cancellation
+export const cancelAppoitment = async (req, res) => {
+    const { appointmentId } = req.body;
+    
+    try {
+        const appointmentData = await appointementModel.findById(appointmentId);
+        await appointementModel.findByIdAndUpdate(appointmentId, { cancelled: true });
+
+        const { carId, slotDate, slotTime } = appointmentData;
+
+        const carData = await carsModel.findById(carId);
+
+        let slots_booked = carData.slots_booked;
+
+        slots_booked[slotDate] = slots_booked[slotDate].filter((e) => e !== slotTime);
+
+        await carsModel.findByIdAndUpdate(carId, { slots_booked });
+
+        res.json({ success: true, message: "Appointment Cancelled" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};

@@ -99,29 +99,41 @@ const Appointment = () => {
   const bookAppointment = async () => {
     if (!token) {
       toast.warn("Login to book appointment");
+      return; // <--- You already fixed this!
+    }
+  
+    // Validate that a day is selected
+    if (!carSlots[slotIndex] || carSlots[slotIndex].length === 0) {
+      toast.warn("Please select a valid day to book an appointment");
       return;
-    } 
-    
+    }
+  
+    // Validate that a time is selected
+    if (!slotTime) {
+      toast.warn("Please select a time slot");
+      return;
+    }
+  
     try {
       const date = carSlots[slotIndex][0].dateTime;
       let day = date.getDate();
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
-      const slotDate = day + "_" + month + "_" + year;
-
-      const { data } = await axios.post(`${backendUrl}/api/users/book-appointment`, { carId, slotDate, slotTime }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
+      const slotDate = `${day}_${month}_${year}`;
+  
+      const { data } = await axios.post(
+        `${backendUrl}/api/users/book-appointment`,
+        { carId, slotDate, slotTime },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
       if (data.success) {
         toast.success(data.message);
         await getCarsData();
         navigate("/my-appointments");
-
       } else {
         toast.error(data.message);
       }
-
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -192,7 +204,15 @@ const Appointment = () => {
           ))}
         </div>
 
-        <button onClick={bookAppointment} className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">Book an appointment</button>
+        <button
+  onClick={bookAppointment}
+  disabled={!slotTime}
+  className={`text-sm font-light px-14 py-3 rounded-full my-6 ${
+    slotTime ? "bg-primary text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"
+  }`}
+>
+  Book an appointment
+</button>
       </div>
 
       <RelatedCars carId={carId} brand={carInfo.brand} />

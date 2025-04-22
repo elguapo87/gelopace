@@ -18,7 +18,8 @@ const appointmentSchema = new mongoose.Schema({
         required: true
     },
     userData: {
-        type: Object,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user", // Make sure this matches the model name you export (`usersModel`)
         required: true
     },
     carData: {

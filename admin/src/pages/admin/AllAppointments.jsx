@@ -6,7 +6,7 @@ import { assets } from "../../assets/assets";
 
 const AllAppointments = () => {
 
-  const { aToken, appointments, getAllAppointments, cancelAppointment } = useContext(AdminContext);
+  const { aToken, appointments, getAllAppointments } = useContext(AdminContext);
   const { currency, calculateAge, slotDateFormat } = useContext(AppContext);
 
   useEffect(() => {
@@ -14,9 +14,6 @@ const AllAppointments = () => {
       getAllAppointments();
     }
   }, [aToken]);
-
-  console.log(appointments);
-  
 
   return (
     <div className='w-full max-w-6xl m-5'>
@@ -42,7 +39,7 @@ const AllAppointments = () => {
               <p>{item.userData.name}</p>
             </div>
 
-            <p className='max-sm:hidden'>{calculateAge(item.userData.dob)}</p>
+            <p className='max-sm:hidden'>{item.userData.dob === "Not Selected" ? "N/A" : calculateAge(item.userData.dob)}</p>
             <p>{slotDateFormat(item.slotDate)}, {item.slotTime}</p>
 
             <div className='flex items-center gap-2'>
@@ -61,7 +58,7 @@ const AllAppointments = () => {
                   ?
                   <p className='text-green-500 text-xs font-medium'>Completed</p>
                   :
-                  <img onClick={() => cancelAppointment(item._id)} className="w-10 cursor-pointer" src={assets.cancel_icon} alt="" />
+                  <img className="w-10 cursor-pointer" src={assets.cancel_icon} alt="" />
             }
           </div>
         ))}

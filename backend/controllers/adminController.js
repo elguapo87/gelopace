@@ -93,7 +93,7 @@ export const carList = async (req, res) => {
 // API to get all appointments list
 export const appointmentList = async (req, res) => {
     try {
-        const appointments = await appointementModel.find({});
+        const appointments = await appointementModel.find({}).populate("userData");
         res.json({ success: true, appointments });
 
     } catch (error) {

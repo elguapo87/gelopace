@@ -21,6 +21,7 @@ const allowedOrigins = [
     "http://localhost:5173", // Frontend local dev
     "http://localhost:5174", // Admin local dev
     "https://gelopace-client.onrender.com", // Frontend on Render
+    "https://gelopace-admin.onrender.com", // Admin on Render
 ];
 
 app.use(cors({

@@ -3,6 +3,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
+import appointementModel from "../models/appointmentModel.js";
 
 // API for adding cars
 export const addCar = async (req, res) => {
@@ -82,6 +83,18 @@ export const carList = async (req, res) => {
     try {
         const cars = await carsModel.find({}).select("-password");
         res.json({ success: true, cars });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// API to get all appointments list
+export const appointmentList = async (req, res) => {
+    try {
+        const appointments = await appointementModel.find({});
+        res.json({ success: true, appointments });
 
     } catch (error) {
         console.log(error);

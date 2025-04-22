@@ -88,7 +88,7 @@ const Appointment = () => {
           });
         }
 
-        // increment current time by 30 minutes
+        // increment current time by 60 minutes
         currentDate.setMinutes(currentDate.getMinutes() + 60);
       }
       

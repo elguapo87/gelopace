@@ -62,7 +62,7 @@ const Dashboard = () => {
               {
                 item.cancelled
                      ?
-                <p className='text-red-400 text-xs font-medium'>Canceled</p>
+                <p className='text-red-400 text-xs font-medium'>Cancelled</p>
                      :
                 item.isCompleted
                      ?

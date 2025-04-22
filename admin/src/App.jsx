@@ -10,13 +10,15 @@ import AllAppointments from "./pages/admin/AllAppointments";
 import AddCar from "./pages/admin/AddCar";
 import CarList from "./pages/admin/CarList";
 import Login from "./pages/admin/Login";
+import { CarContext } from "./context/CarContext";
 
 
 const App = () => {
 
   const { aToken } = useContext(AdminContext);
+  const { cToken } = useContext(CarContext);
 
-  return aToken ? (
+  return aToken || cToken ? (
     <div className="bg-[#f8f9fd]">
       <ToastContainer />
       <Navbar />

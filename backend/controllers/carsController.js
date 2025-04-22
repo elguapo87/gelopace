@@ -1,4 +1,6 @@
 import carsModel from "../models/carsModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // API to change available status 
 export const changeStatus = async (req, res) => {
@@ -19,6 +21,31 @@ export const carList = async (req, res) => {
     try {
         const allCars = await carsModel.find({}).select(["-password", "-email"]);
         res.json({ success: true, allCars });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// API for car login
+export const carLogin = async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+        const car = await carsModel.findOne({ email });
+        if (!car) {
+            return res.json({ success: false, message: "Car Not Found" });
+        }
+
+        const isMatch = await bcrypt.compare(password, car.password);
+        if (!isMatch) {
+            return res.json({ success: false, message: "Invalid Credentials" });
+        }
+
+        const token = jwt.sign({ id: car._id }, process.env.JWT_SECRET);
+
+        res.json({ success: true, token });
 
     } catch (error) {
         console.log(error);

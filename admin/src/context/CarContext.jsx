@@ -11,6 +11,7 @@ const CarContextProvider = (props) => {
     const [cToken, setCToken] = useState(localStorage.getItem("cToken") ? localStorage.getItem("cToken") : "");
     const [appointments, setAppointments] = useState([]);
     const [dashData, setDashData] = useState(false);
+    const [car, setCar] = useState(false);
 
     const getAppointments = async () => {
         try {
@@ -92,6 +93,25 @@ const CarContextProvider = (props) => {
         }
     };
 
+    const getCarData = async (req, res) => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/cars/car-profile`, {
+                headers: { Authorization: `Bearer ${cToken}` }
+            });
+
+            if (data.success) {
+                setCar(data.car);
+
+            } else {
+                toast.error(data.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
     const value = {
         backendUrl,
         cToken, setCToken,
@@ -101,6 +121,8 @@ const CarContextProvider = (props) => {
         cancelAppointment,
         dashData, setDashData,
         getDashData,
+        car, setCar,
+        getCarData
     };
 
     return (

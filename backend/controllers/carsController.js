@@ -157,3 +157,51 @@ export const carDashData = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
+// API to get car profile for car panel
+export const carProfile = async (req, res) => {
+    const carId = req.carId;
+    
+    try {
+        const car = await carsModel.findById(carId).select("-password");
+        res.json({ success: true, car });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// API to update car data from doctor panel
+export const updateCarInfo = async (req, res) => {
+    const carId = req.carId;
+    const { name, email, brand, aspiration, displacement, power, about, fees, available } = req.body;
+    const imageFile = req.file;
+
+    try {
+        await carsModel.findByIdAndUpdate(carId, {
+            name,
+            email,
+            brand,
+            aspiration,
+            displacement,
+            power,
+            about,
+            fees,
+            available
+        });
+
+        if (imageFile) {
+            const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
+            const imageUrl = imageUpload.secure_url;
+
+            await carsModel.findByIdAndUpdate(carId, { image: imageUrl });
+        }
+        
+        res.json({ success: true, message: "Car Info Updated" })
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};

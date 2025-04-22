@@ -177,3 +177,47 @@ export const bookAppointment = async (req, res) => {
     }
 };
 
+// API to get user appointments for frontend my-appointments page
+export const appointmentList = async (req, res) => {
+    const userId = req.userId
+    
+    try {
+        const appointments = await appointementModel.find({ userId });
+        res.json({ success: true, appointments });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// API to cancel appointment
+export const cancelAppointment = async (req, res) => {
+    const userId = req.userId;
+    const { appointmentId } = req.body;
+    
+    try {
+        const appointmentData = await appointementModel.findById(appointmentId);
+        if (appointmentData.userId !== userId) {
+            return res.json({ success: false, message: "Unauthorized Action" });
+        }
+
+        await appointementModel.findByIdAndUpdate(appointmentId, { cancelled: true });
+
+        const { carId, slotDate, slotTime } = appointmentData;
+        
+        const carData = await carsModel.findById(carId);
+
+        let slots_booked = carData.slots_booked;
+
+        slots_booked[slotDate] = slots_booked[slotDate].filter((e) => e !== slotTime);
+
+        await carsModel.findByIdAndUpdate(carId, { slots_booked });
+
+        res.json({ success: true, message: "Appointment Cancelled" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};

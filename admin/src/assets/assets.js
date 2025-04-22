@@ -14,6 +14,7 @@ import patients_icon from './patients_icon.svg'
 import gelopace_dash from "./gelopace_dash.png"
 import car_icon from "./car_icon.svg"
 import upload_icon from "./upload_icon.png"
+import noAvatar from "./avatar_icon.png";
 
 export const assets = {
     add_icon,
@@ -31,5 +32,6 @@ export const assets = {
     earning_icon,
     gelopace_dash,
     car_icon,
-    upload_icon
+    upload_icon,
+    noAvatar
 }

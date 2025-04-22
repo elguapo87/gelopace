@@ -119,3 +119,41 @@ export const cancelAppointment = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 };
+
+// API to get dashboard data for car panel
+export const carDashData = async (req, res) => {
+    const carId = req.carId;
+
+    try {
+        const carAppointments = await appointementModel.find({ carId });
+
+        let earnings = 0;
+
+        carAppointments.map((item) => {
+            if (item.isCompleted || item.payment) {
+                earnings += item.amount
+            }
+        })
+
+        let customers = [];
+
+        carAppointments.map((item) => {
+            if (!customers.includes(item.userId)) {
+                customers.push(item.userId);
+            }
+        })
+
+        const dashData = {
+            earnings,
+            customers: customers.length,
+            carAppointments: carAppointments.length,
+            latestAppointments: carAppointments.reverse().slice(0, 5)
+        };
+
+        res.json({ success: true, dashData });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};

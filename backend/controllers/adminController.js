@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
 import appointementModel from "../models/appointmentModel.js";
+import usersModel from "../models/usersModel.js";
 
 // API for adding cars
 export const addCar = async (req, res) => {
@@ -121,6 +122,28 @@ export const cancelAppoitment = async (req, res) => {
         await carsModel.findByIdAndUpdate(carId, { slots_booked });
 
         res.json({ success: true, message: "Appointment Cancelled" });
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// API to get dashboard data for admin panel
+export const getDashboardData = async (req, res) => {
+    try {
+        const cars = await carsModel.find({});
+        const users = await usersModel.find({});
+        const appointments = await appointementModel.find({});
+
+        const dashData = {
+            cars: cars.length,
+            customers: users.length,
+            appointments: appointments.length,
+            latestAppointments: appointments.reverse().slice(0, 5)
+        };
+
+        res.json({ success: true, dashData});
 
     } catch (error) {
         console.log(error);

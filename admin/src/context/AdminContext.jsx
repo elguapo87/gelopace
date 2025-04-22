@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { createContext } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import axios from "axios";
 
 export const AdminContext = createContext();
 
 const AdminContextProvider = (props) => {
 
-    const [aToken, setAToken] = useState(localStorage.getItem("aToken") ? localStorage.getItem("aToken") : "");               
+    const [aToken, setAToken] = useState(localStorage.getItem("aToken") ? localStorage.getItem("aToken") : "");
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const [cars, setCars] = useState([]);
     const [appointments, setAppointments] = useState([]);
+    const [dashData, setDashData] = useState(false);
 
     const getCarList = async () => {
         try {
@@ -80,6 +80,7 @@ const AdminContextProvider = (props) => {
             if (data.success) {
                 toast.success(data.message);
                 await getAllAppointments();
+                await getDashboardData();
 
             } else {
                 toast.error(data.message);   
@@ -91,15 +92,32 @@ const AdminContextProvider = (props) => {
         }
     };
 
+    const getDashboardData = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/admin/dashboard-data`, {
+                headers: { aToken }
+            });
+
+            if (data.success) {
+                setDashData(data.dashData);
+            }
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
     const value = {
-        aToken, setAToken,       
+        aToken, setAToken,
         backendUrl,
         cars, setCars,
         getCarList,
         changeStatus,
         appointments, setAppointments,
         getAllAppointments,
-        cancelAppointment
+        cancelAppointment,
+        dashData, getDashboardData
     };
 
     return (

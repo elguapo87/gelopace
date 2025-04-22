@@ -30,11 +30,53 @@ const CarContextProvider = (props) => {
         }
     };
 
+    const completeAppointment = async (appointmentId) => {
+        try {
+            const { data } = await axios.post(`${backendUrl}/api/cars/complete-appointment`, { appointmentId }, {
+                headers: { Authorization: `Bearer ${cToken}` }
+            });
+
+            if (data.success) {
+                toast.success(data.message);
+                await getAppointments();
+
+            } else {
+                toast.error(data.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
+    const cancelAppointment = async (appointmentId) => {
+        try {
+            const { data } = await axios.post(`${backendUrl}/api/cars/cancel-appointment`, { appointmentId }, {
+                headers: { Authorization: `Bearer ${cToken}` }
+            });
+
+            if (data.success) {
+                toast.success(data.message);
+                await getAppointments();
+
+            } else {
+                toast.error(data.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+        }
+    };
+
     const value = {
         backendUrl,
         cToken, setCToken,
         appointments, setAppointments,
-        getAppointments
+        getAppointments,
+        completeAppointment,
+        cancelAppointment,
     };
 
     return (

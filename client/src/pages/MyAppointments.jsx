@@ -112,7 +112,7 @@ const MyAppointments = () => {
               {
                 item.isCompleted
                     &&
-                <p className="sm:min-w-48 px-5 py-2 border border-green-500 rounded text-green-500">Appointment Cancelled</p>
+                <p className="sm:min-w-48 px-5 py-2 border border-green-500 rounded text-green-500">Appointment Completed</p>
               }
             </div>
           </div>
